@@ -15,13 +15,13 @@ export default function DataCenter2DView({ infrastructureData, onDeviceSelect }:
   const [hoveredDevice, setHoveredDevice] = useState<Device | null>(null)
 
   return (
-    <div className="w-full h-full bg-gray-950 p-8 overflow-auto">
+    <div className="w-full h-full bg-gray-50 p-8 overflow-auto">
       <TooltipProvider>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {infrastructureData.racks.map((rack) => (
-            <div key={rack.id} className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+            <div key={rack.id} className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
               <div
-                className="bg-gray-800 p-4 flex justify-between items-center cursor-pointer"
+                className="bg-gray-100 p-4 flex justify-between items-center cursor-pointer"
                 onClick={() => onDeviceSelect(rack)}
               >
                 <h3 className="font-medium flex items-center">
@@ -40,7 +40,7 @@ export default function DataCenter2DView({ infrastructureData, onDeviceSelect }:
                     <Tooltip key={node.id}>
                       <TooltipTrigger asChild>
                         <div
-                          className="flex items-center p-3 bg-gray-800 rounded border border-gray-700 hover:border-gray-500 cursor-pointer transition-colors"
+                          className="flex items-center p-3 bg-gray-50 rounded border border-gray-200 hover:border-gray-400 cursor-pointer transition-colors"
                           onClick={() => onDeviceSelect(node)}
                           onMouseEnter={() => setHoveredDevice(node)}
                           onMouseLeave={() => setHoveredDevice(null)}
@@ -48,7 +48,7 @@ export default function DataCenter2DView({ infrastructureData, onDeviceSelect }:
                           {getDeviceIcon(node.type)}
                           <div className="ml-3 flex-1">
                             <div className="font-medium">{node.name}</div>
-                            <div className="text-xs text-gray-400">{getDeviceTypeLabel(node.type)}</div>
+                            <div className="text-xs text-gray-500">{getDeviceTypeLabel(node.type)}</div>
                           </div>
                           {node.type === "node" && (
                             <Badge className="bg-blue-600">

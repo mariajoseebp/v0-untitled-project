@@ -15,7 +15,7 @@ export default function DataCenter3DView({ infrastructureData, onDeviceSelect }:
   return (
     <div className="w-full h-full">
       <Canvas camera={{ position: [0, 10, 15], fov: 50 }}>
-        <color attach="background" args={["#0f172a"]} />
+        <color attach="background" args={["#f8fafc"]} />
         <ambientLight intensity={0.5} />
         <pointLight position={[10, 10, 10]} intensity={1} />
         <Suspense fallback={null}>
@@ -43,7 +43,7 @@ function DataCenterModel({ infrastructureData, onDeviceSelect }: DataCenter3DVie
       {/* Floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
         <planeGeometry args={[30, 30]} />
-        <meshStandardMaterial color="#1e293b" />
+        <meshStandardMaterial color="#e2e8f0" />
       </mesh>
 
       {/* Racks */}
@@ -77,9 +77,9 @@ function DataCenterModel({ infrastructureData, onDeviceSelect }: DataCenter3DVie
       {/* Hover info */}
       {hoveredDevice && (
         <Html position={[0, 5, 0]} center>
-          <div className="bg-gray-900 p-2 rounded shadow-lg text-white text-sm w-48">
+          <div className="bg-white p-2 rounded shadow-lg text-gray-900 text-sm w-48">
             <h3 className="font-bold">{hoveredDevice.name}</h3>
-            <p className="text-xs text-gray-300">{getDeviceTypeLabel(hoveredDevice.type)}</p>
+            <p className="text-xs text-gray-500">{getDeviceTypeLabel(hoveredDevice.type)}</p>
             {hoveredDevice.type === "node" && (
               <Badge className="mt-1 bg-blue-600">
                 {vms.filter((vm) => vm.nodeId === hoveredDevice.id).length} VMs
@@ -117,7 +117,7 @@ function RackModel({
         onClick={() => onSelect(rack)}
       >
         <boxGeometry args={[rackWidth, rackHeight, rackDepth]} />
-        <meshStandardMaterial color="#475569" wireframe />
+        <meshStandardMaterial color="#94a3b8" wireframe />
       </mesh>
 
       {/* Nodes inside rack */}

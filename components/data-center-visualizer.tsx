@@ -78,8 +78,8 @@ export default function DataCenterVisualizer() {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen bg-gray-950 text-white">
-      <header className="border-b border-gray-800 p-4">
+    <div className="flex flex-col w-full h-screen bg-gray-50 text-gray-900">
+      <header className="border-b border-gray-200 p-4">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold flex items-center">
             <Server className="mr-2" /> Proxmox Data Center Visualizer
@@ -130,7 +130,7 @@ export default function DataCenterVisualizer() {
 
       <main className="flex-1 overflow-hidden">
         {!isConnected ? (
-          <div className="max-w-md mx-auto mt-20 p-6 bg-gray-900 rounded-lg shadow-lg">
+          <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold mb-4">Connect to Proxmox</h2>
             <div className="space-y-4">
               <div>
@@ -140,7 +140,7 @@ export default function DataCenterVisualizer() {
                   placeholder="https://proxmox.example.com:8006/api2/json"
                   value={proxmoxUrl}
                   onChange={(e) => setProxmoxUrl(e.target.value)}
-                  className="bg-gray-800"
+                  className="bg-white border-gray-300"
                 />
               </div>
               <div>
@@ -150,7 +150,7 @@ export default function DataCenterVisualizer() {
                   placeholder="root@pam"
                   value={proxmoxUser}
                   onChange={(e) => setProxmoxUser(e.target.value)}
-                  className="bg-gray-800"
+                  className="bg-white border-gray-300"
                 />
               </div>
               <div>
@@ -160,7 +160,7 @@ export default function DataCenterVisualizer() {
                   type="password"
                   value={proxmoxPassword}
                   onChange={(e) => setProxmoxPassword(e.target.value)}
-                  className="bg-gray-800"
+                  className="bg-white border-gray-300"
                 />
               </div>
               {error && (
@@ -178,7 +178,7 @@ export default function DataCenterVisualizer() {
             <div className="flex-1 relative">
               <div className="absolute top-4 left-4 z-10">
                 <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "2d" | "3d")}>
-                  <TabsList className="bg-gray-800">
+                  <TabsList className="bg-gray-100">
                     <TabsTrigger value="2d">2D View</TabsTrigger>
                     <TabsTrigger value="3d">3D View</TabsTrigger>
                   </TabsList>
@@ -195,7 +195,7 @@ export default function DataCenterVisualizer() {
             </div>
 
             {selectedDevice && (
-              <div className="w-96 border-l border-gray-800 overflow-y-auto">
+              <div className="w-96 border-l border-gray-200 overflow-y-auto">
                 <DeviceDetails device={selectedDevice} onClose={handleCloseDetails} />
               </div>
             )}

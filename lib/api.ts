@@ -1,186 +1,168 @@
 import type { InfrastructureData, Device, VirtualMachine } from "./types"
 
-// This is a mock implementation that would be replaced with actual API calls to Proxmox
+// Proper implementation for connecting to Proxmox API
 export async function fetchInfrastructureData(
   proxmoxUrl: string,
   username: string,
   password: string,
 ): Promise<InfrastructureData> {
-  // In a real implementation, this would make API calls to Proxmox
-  // For now, we'll return mock data
+  try {
+    // Step 1: Authenticate with Proxmox API
+    const authResponse = await fetch(`${proxmoxUrl}/access/ticket`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        username,
+        password,
+      }),
+    })
 
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-
-  // Check if credentials are provided (simple validation)
-  if (!proxmoxUrl || !username || !password) {
-    throw new Error("Proxmox API URL, username, and password are required")
-  }
-
-  // Mock data
-  const racks: Device[] = [
-    { id: "rack-1", name: "Rack A1", type: "rack", status: "online", description: "Primary server rack" },
-    { id: "rack-2", name: "Rack A2", type: "rack", status: "online", description: "Secondary server rack" },
-    { id: "rack-3", name: "Rack B1", type: "rack", status: "online", description: "Storage rack" },
-  ]
-
-  const nodes: Device[] = [
-    {
-      id: "node-1",
-      name: "pve-node01",
-      type: "node",
-      status: "online",
-      ipAddress: "192.168.1.10",
-      rackId: "rack-1",
-      cpuModel: "Intel Xeon E5-2680 v4",
-      cpuCores: 28,
-      memory: 128 * 1024 * 1024 * 1024, // 128 GB
-    },
-    {
-      id: "node-2",
-      name: "pve-node02",
-      type: "node",
-      status: "online",
-      ipAddress: "192.168.1.11",
-      rackId: "rack-1",
-      cpuModel: "Intel Xeon E5-2680 v4",
-      cpuCores: 28,
-      memory: 128 * 1024 * 1024 * 1024, // 128 GB
-    },
-    {
-      id: "node-3",
-      name: "pve-node03",
-      type: "node",
-      status: "warning",
-      ipAddress: "192.168.1.12",
-      rackId: "rack-2",
-      cpuModel: "AMD EPYC 7302",
-      cpuCores: 32,
-      memory: 256 * 1024 * 1024 * 1024, // 256 GB
-    },
-  ]
-
-  const storage: Device[] = [
-    {
-      id: "storage-1",
-      name: "synology-nas01",
-      type: "storage",
-      status: "online",
-      ipAddress: "192.168.1.20",
-      rackId: "rack-3",
-      storageType: "NAS",
-      storageCapacity: 48 * 1024 * 1024 * 1024 * 1024, // 48 TB
-    },
-    {
-      id: "storage-2",
-      name: "ceph-cluster",
-      type: "storage",
-      status: "online",
-      rackId: "rack-2",
-      storageType: "Ceph",
-      storageCapacity: 120 * 1024 * 1024 * 1024 * 1024, // 120 TB
-    },
-  ]
-
-  const network: Device[] = [
-    {
-      id: "network-1",
-      name: "core-switch-01",
-      type: "network",
-      status: "online",
-      ipAddress: "192.168.1.254",
-      rackId: "rack-1",
-      networkPorts: 48,
-      networkSpeed: "10 Gbps",
-    },
-    {
-      id: "network-2",
-      name: "storage-switch-01",
-      type: "network",
-      status: "online",
-      ipAddress: "192.168.2.254",
-      rackId: "rack-3",
-      networkPorts: 24,
-      networkSpeed: "25 Gbps",
-    },
-  ]
-
-  const ups: Device[] = [
-    {
-      id: "ups-1",
-      name: "apc-ups-01",
-      type: "ups",
-      status: "online",
-      ipAddress: "192.168.1.30",
-      rackId: "rack-1",
-      description: "APC Smart-UPS 3000VA",
-    },
-  ]
-
-  // Generate some VMs for each node
-  const vms: VirtualMachine[] = []
-
-  const vmNames = [
-    "web-server",
-    "db-server",
-    "app-server",
-    "cache-server",
-    "monitoring",
-    "backup",
-    "mail-server",
-    "proxy",
-    "dns",
-    "ldap",
-  ]
-
-  const osList = [
-    "Ubuntu 22.04",
-    "Debian 11",
-    "CentOS 8",
-    "Rocky Linux 8",
-    "Windows Server 2022",
-    "Fedora 36",
-    "Alpine Linux 3.16",
-  ]
-
-  nodes.forEach((node) => {
-    // Generate 5-10 VMs per node
-    const vmCount = 5 + Math.floor(Math.random() * 6)
-
-    for (let i = 0; i < vmCount; i++) {
-      const vmId = `vm-${vms.length + 100}`
-      const nameBase = vmNames[Math.floor(Math.random() * vmNames.length)]
-      const name = `${nameBase}-${Math.floor(Math.random() * 10)}`
-      const os = osList[Math.floor(Math.random() * osList.length)]
-      const status = Math.random() > 0.2 ? "running" : Math.random() > 0.5 ? "stopped" : "paused"
-      const ipLastOctet = 100 + vms.length
-
-      vms.push({
-        id: vmId,
-        name,
-        status: status as "running" | "stopped" | "paused",
-        os,
-        ipAddress: `192.168.1.${ipLastOctet}`,
-        cpuCores: 1 + Math.floor(Math.random() * 8),
-        memory: [2, 4, 8, 16, 32][Math.floor(Math.random() * 5)] * 1024,
-        disk: [10, 20, 50, 100, 200][Math.floor(Math.random() * 5)],
-        nodeId: node.id,
-      })
+    if (!authResponse.ok) {
+      throw new Error(`Authentication failed: ${authResponse.statusText}`)
     }
-  })
 
-  return {
-    nodes,
-    racks,
-    storage,
-    network,
-    ups,
-    vms,
+    const authData = await authResponse.json()
+    const ticket = authData.data.ticket
+    const csrfToken = authData.data.CSRFPreventionToken
+
+    // Step 2: Fetch nodes
+    const nodesResponse = await fetch(`${proxmoxUrl}/nodes`, {
+      headers: {
+        Authorization: `PVEAuthCookie=${ticket}`,
+      },
+    })
+
+    if (!nodesResponse.ok) {
+      throw new Error(`Failed to fetch nodes: ${nodesResponse.statusText}`)
+    }
+
+    const nodesData = await nodesResponse.json()
+    const nodes: Device[] = nodesData.data.map((node: any) => ({
+      id: `node-${node.node}`,
+      name: node.node,
+      type: "node",
+      status: node.status === "online" ? "online" : "offline",
+      ipAddress: node.ip || "Unknown",
+      cpuModel: "Fetching...", // Would require additional API call
+      cpuCores: 0, // Would require additional API call
+      memory: 0, // Would require additional API call
+      rackId: "rack-1", // Default rack assignment, would need to be determined
+    }))
+
+    // Step 3: Fetch VMs for each node
+    const vms: VirtualMachine[] = []
+    for (const node of nodes) {
+      const nodeId = node.name // Proxmox uses node name as ID
+      const vmsResponse = await fetch(`${proxmoxUrl}/nodes/${nodeId}/qemu`, {
+        headers: {
+          Authorization: `PVEAuthCookie=${ticket}`,
+        },
+      })
+
+      if (vmsResponse.ok) {
+        const vmsData = await vmsResponse.json()
+        const nodeVms = vmsData.data.map((vm: any) => ({
+          id: `vm-${vm.vmid}`,
+          name: vm.name,
+          status: vm.status,
+          os: "Unknown", // Would require additional API call
+          ipAddress: "Fetching...", // Would require additional API call
+          cpuCores: vm.cpus || 1,
+          memory: vm.maxmem / (1024 * 1024), // Convert to MB
+          disk: 0, // Would require additional API call
+          nodeId: node.id,
+        }))
+        vms.push(...nodeVms)
+      }
+    }
+
+    // For demo purposes, we'll create mock racks and other devices
+    // In a real implementation, this would come from SNMP, IPMI, etc.
+    const racks: Device[] = [
+      { id: "rack-1", name: "Rack A1", type: "rack", status: "online", description: "Primary server rack" },
+      { id: "rack-2", name: "Rack A2", type: "rack", status: "online", description: "Secondary server rack" },
+    ]
+
+    const storage: Device[] = [
+      {
+        id: "storage-1",
+        name: "synology-nas01",
+        type: "storage",
+        status: "online",
+        ipAddress: "192.168.1.20",
+        rackId: "rack-1",
+        storageType: "NAS",
+        storageCapacity: 48 * 1024 * 1024 * 1024 * 1024, // 48 TB
+      },
+    ]
+
+    const network: Device[] = [
+      {
+        id: "network-1",
+        name: "core-switch-01",
+        type: "network",
+        status: "online",
+        ipAddress: "192.168.1.254",
+        rackId: "rack-1",
+        networkPorts: 48,
+        networkSpeed: "10 Gbps",
+      },
+    ]
+
+    const ups: Device[] = [
+      {
+        id: "ups-1",
+        name: "apc-ups-01",
+        type: "ups",
+        status: "online",
+        ipAddress: "192.168.1.30",
+        rackId: "rack-1",
+        description: "APC Smart-UPS 3000VA",
+      },
+    ]
+
+    return {
+      nodes,
+      racks,
+      storage,
+      network,
+      ups,
+      vms,
+    }
+  } catch (error) {
+    console.error("Error fetching infrastructure data:", error)
+    throw error
   }
 }
 
-// In a real implementation, you would have additional functions for:
-// - fetchNodeDetails
-// - fetchVirtualMachines
-// - fetchStorageDetails
-// - etc.
+// Function to fetch detailed node information
+export async function fetchNodeDetails(proxmoxUrl: string, ticket: string, nodeId: string): Promise<any> {
+  const response = await fetch(`${proxmoxUrl}/nodes/${nodeId}/status`, {
+    headers: {
+      Authorization: `PVEAuthCookie=${ticket}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch node details: ${response.statusText}`)
+  }
+
+  return await response.json()
+}
+
+// Function to fetch VM details
+export async function fetchVmDetails(proxmoxUrl: string, ticket: string, nodeId: string, vmId: string): Promise<any> {
+  const response = await fetch(`${proxmoxUrl}/nodes/${nodeId}/qemu/${vmId}/status/current`, {
+    headers: {
+      Authorization: `PVEAuthCookie=${ticket}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch VM details: ${response.statusText}`)
+  }
+
+  return await response.json()
+}

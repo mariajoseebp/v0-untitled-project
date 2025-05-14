@@ -32,8 +32,8 @@ export default function DeviceDetails({ device, onClose }: DeviceDetailsProps) {
   const [activeTab, setActiveTab] = useState("overview")
 
   return (
-    <div className="h-full bg-gray-900">
-      <div className="flex items-center justify-between p-4 border-b border-gray-800">
+    <div className="h-full bg-white">
+      <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h2 className="text-lg font-medium flex items-center">
           {getDeviceIcon(device.type)}
           <span className="ml-2">{device.name}</span>
@@ -85,52 +85,52 @@ export default function DeviceDetails({ device, onClose }: DeviceDetailsProps) {
 function DeviceOverview({ device }: { device: Device }) {
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="bg-white border border-gray-200">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Details</CardTitle>
         </CardHeader>
         <CardContent>
           <dl className="grid grid-cols-2 gap-2 text-sm">
-            <dt className="text-gray-400">ID:</dt>
+            <dt className="text-gray-500">ID:</dt>
             <dd>{device.id}</dd>
 
-            <dt className="text-gray-400">Status:</dt>
+            <dt className="text-gray-500">Status:</dt>
             <dd>
               <Badge variant={device.status === "online" ? "default" : "destructive"}>{device.status}</Badge>
             </dd>
 
-            <dt className="text-gray-400">IP Address:</dt>
+            <dt className="text-gray-500">IP Address:</dt>
             <dd>{device.ipAddress || "N/A"}</dd>
 
             {device.type === "node" && (
               <>
-                <dt className="text-gray-400">CPU Model:</dt>
+                <dt className="text-gray-500">CPU Model:</dt>
                 <dd>{device.cpuModel || "N/A"}</dd>
 
-                <dt className="text-gray-400">CPU Cores:</dt>
+                <dt className="text-gray-500">CPU Cores:</dt>
                 <dd>{device.cpuCores || "N/A"}</dd>
 
-                <dt className="text-gray-400">Memory:</dt>
+                <dt className="text-gray-500">Memory:</dt>
                 <dd>{formatMemory(device.memory || 0)}</dd>
               </>
             )}
 
             {device.type === "storage" && (
               <>
-                <dt className="text-gray-400">Storage Type:</dt>
+                <dt className="text-gray-500">Storage Type:</dt>
                 <dd>{device.storageType || "N/A"}</dd>
 
-                <dt className="text-gray-400">Capacity:</dt>
+                <dt className="text-gray-500">Capacity:</dt>
                 <dd>{formatStorage(device.storageCapacity || 0)}</dd>
               </>
             )}
 
             {device.type === "network" && (
               <>
-                <dt className="text-gray-400">Ports:</dt>
+                <dt className="text-gray-500">Ports:</dt>
                 <dd>{device.networkPorts || "N/A"}</dd>
 
-                <dt className="text-gray-400">Speed:</dt>
+                <dt className="text-gray-500">Speed:</dt>
                 <dd>{device.networkSpeed || "N/A"}</dd>
               </>
             )}
@@ -139,7 +139,7 @@ function DeviceOverview({ device }: { device: Device }) {
       </Card>
 
       {device.description && (
-        <Card>
+        <Card className="bg-white border border-gray-200">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Description</CardTitle>
           </CardHeader>
@@ -195,7 +195,7 @@ function VirtualMachinesList({ nodeId }: { nodeId: string }) {
       <h3 className="text-sm font-medium">Virtual Machines ({mockVMs.length})</h3>
 
       {mockVMs.map((vm) => (
-        <Card key={vm.id}>
+        <Card key={vm.id} className="bg-white border border-gray-200">
           <CardContent className="p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
@@ -205,7 +205,7 @@ function VirtualMachinesList({ nodeId }: { nodeId: string }) {
               <Badge variant={vm.status === "running" ? "default" : "secondary"}>{vm.status}</Badge>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 text-xs text-gray-400">
+            <div className="grid grid-cols-2 gap-2 text-xs text-gray-500">
               <div className="flex items-center">
                 <Globe className="h-3 w-3 mr-1" />
                 {vm.ipAddress}
@@ -243,7 +243,7 @@ function ResourceUsage({ device }: { device: Device }) {
 
   return (
     <div className="space-y-4">
-      <Card>
+      <Card className="bg-white border border-gray-200">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">CPU Usage</CardTitle>
         </CardHeader>
@@ -258,7 +258,7 @@ function ResourceUsage({ device }: { device: Device }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white border border-gray-200">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
         </CardHeader>
@@ -276,7 +276,7 @@ function ResourceUsage({ device }: { device: Device }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white border border-gray-200">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Disk Usage</CardTitle>
         </CardHeader>
@@ -291,7 +291,7 @@ function ResourceUsage({ device }: { device: Device }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="bg-white border border-gray-200">
         <CardHeader className="pb-2">
           <CardTitle className="text-sm font-medium">Network Usage</CardTitle>
         </CardHeader>
