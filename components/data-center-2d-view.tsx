@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import type { InfrastructureData, Device, DeviceType } from "@/lib/types"
-import { Server, Database, HardDrive, Network, Zap, Monitor, LayoutGrid } from "lucide-react"
+import type { InfrastructureData, Device } from "@/lib/types"
+import { LayoutGrid } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { getDeviceIcon, getDeviceTypeLabel } from "@/lib/utils"
 
 interface DataCenter2DViewProps {
   infrastructureData: InfrastructureData
@@ -69,42 +70,4 @@ export default function DataCenter2DView({ infrastructureData, onDeviceSelect }:
       </TooltipProvider>
     </div>
   )
-}
-
-function getDeviceIcon(type: DeviceType) {
-  switch (type) {
-    case "node":
-      return <Server className="h-5 w-5 text-blue-500" />
-    case "storage":
-      return <Database className="h-5 w-5 text-emerald-500" />
-    case "network":
-      return <Network className="h-5 w-5 text-amber-500" />
-    case "ups":
-      return <Zap className="h-5 w-5 text-red-500" />
-    case "vm":
-      return <Monitor className="h-5 w-5 text-purple-500" />
-    case "rack":
-      return <LayoutGrid className="h-5 w-5 text-gray-500" />
-    default:
-      return <HardDrive className="h-5 w-5 text-gray-500" />
-  }
-}
-
-function getDeviceTypeLabel(type: DeviceType): string {
-  switch (type) {
-    case "node":
-      return "Proxmox Node"
-    case "storage":
-      return "Storage Device"
-    case "network":
-      return "Network Switch"
-    case "ups":
-      return "UPS / Power"
-    case "rack":
-      return "Server Rack"
-    case "vm":
-      return "Virtual Machine"
-    default:
-      return "Unknown Device"
-  }
 }

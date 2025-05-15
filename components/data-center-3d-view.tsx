@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber"
 import { OrbitControls, Environment, Text, Html } from "@react-three/drei"
 import type { InfrastructureData, Device, DeviceType } from "@/lib/types"
 import { Badge } from "@/components/ui/badge"
+import { getDeviceTypeLabel } from "@/lib/utils"
 
 interface DataCenter3DViewProps {
   infrastructureData: InfrastructureData
@@ -155,24 +156,5 @@ function getDeviceColor(type: DeviceType): string {
       return "#ef4444"
     default:
       return "#6b7280"
-  }
-}
-
-function getDeviceTypeLabel(type: DeviceType): string {
-  switch (type) {
-    case "node":
-      return "Proxmox Node"
-    case "storage":
-      return "Storage Device"
-    case "network":
-      return "Network Switch"
-    case "ups":
-      return "UPS / Power"
-    case "rack":
-      return "Server Rack"
-    case "vm":
-      return "Virtual Machine"
-    default:
-      return "Unknown Device"
   }
 }
