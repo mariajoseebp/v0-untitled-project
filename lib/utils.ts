@@ -1,13 +1,8 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 import type { DeviceType } from "./types"
 import { Server, Database, HardDrive, Network, Zap, Monitor, LayoutGrid } from "lucide-react"
-
-// Función para combinar clases con Tailwind
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
 
 // Función para obtener el icono de un dispositivo según su tipo
 export function getDeviceIcon(type: DeviceType) {
@@ -114,4 +109,7 @@ export function loadInfrastructureFromLocalStorage() {
     }
   }
   return null
+}
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
