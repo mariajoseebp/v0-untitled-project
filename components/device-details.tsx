@@ -150,7 +150,10 @@ function DeviceOverview({ device }: { device: Device }) {
 function VirtualMachinesList({
   nodeId,
   infrastructureData,
-}: { nodeId: string; infrastructureData: InfrastructureData }) {
+}: {
+  nodeId: string
+  infrastructureData: InfrastructureData
+}) {
   // Filtrar las VMs que pertenecen a este nodo
   const nodeVMs = infrastructureData.vms.filter((vm) => vm.nodeId === nodeId)
 
