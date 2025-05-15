@@ -44,3 +44,21 @@ export interface InfrastructureData {
   ups: Device[]
   vms: VirtualMachine[]
 }
+
+// Nuevos tipos para la gestión de racks y dispositivos
+export interface RackEditorState {
+  isEditing: boolean
+  selectedRackId: string | null
+  isCreatingRack: boolean
+  isDraggingDevice: boolean
+  draggedDeviceId: string | null
+  targetRackId: string | null
+}
+
+export interface EditableInfrastructureData extends InfrastructureData {
+  // Métodos para modificar la infraestructura
+  updateRackName: (rackId: string, newName: string) => void
+  createRack: (name: string) => string // Devuelve el ID del nuevo rack
+  moveDeviceToRack: (deviceId: string, targetRackId: string) => void
+  deleteRack: (rackId: string) => void
+}
