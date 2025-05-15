@@ -1,17 +1,9 @@
-import SimpleComponent from "@/components/simple-component"
-import StyledComponent from "@/components/styled-component"
-import IconComponent from "@/components/icon-component"
-import UiComponent from "@/components/ui-component"
+import DataCenterVisualizer from "@/components/data-center-visualizer"
 
 export default function Home() {
   return (
-    <div>
-      <h1>Proxmox Data Center Visualizer</h1>
-      <p>Simplified version for debugging</p>
-      <SimpleComponent />
-      <StyledComponent />
-      <IconComponent />
-      <UiComponent />
-    </div>
+    <main className="flex min-h-screen flex-col">
+      <DataCenterVisualizer />
+    </main>
   )
 }
